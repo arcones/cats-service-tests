@@ -4,13 +4,14 @@ plugins {
 }
 
 group 'com.zooplus'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 sourceCompatibility = 1.8
 
 dependencies {
+    testCompile 'net.masterthought:cucumber-reporting:4.4.0'
     testCompile 'com.intuit.karate:karate-junit4:0.9.1'
-    testCompile 'com.intuit.karate:karate-netty:0.9.1'
+    testCompile 'com.intuit.karate:karate-apache:0.9.1'
     testCompile 'com.intuit.karate:karate-gatling:0.9.1'
 }
 
@@ -20,21 +21,23 @@ repositories {
 
 sourceSets {
     test {
-        java {
-            srcDir 'src/service-test/java'
-        }
         scala {
-            srcDir 'src/service-test/scala'
+            srcDir 'src/test/scala'
         }
         resources {
-            srcDir file('src/service-test/java')
+            srcDir file('src/test/java')
             exclude '**/*.java'
         }
     }
 }
 
+test {
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    outputs.upToDateWhen { false }
+}
 
-task loadTest(type: JavaExec) {
+task load(type: JavaExec) {
     classpath = sourceSets.test.output + sourceSets.test.runtimeClasspath
 
     main = 'io.gatling.app.Gatling'
