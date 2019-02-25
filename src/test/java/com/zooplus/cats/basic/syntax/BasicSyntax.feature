@@ -4,6 +4,12 @@ Feature: Try out basic Karate syntax
   Background: Area to define variables used in the scenarios of this file
     * def catName = 'Neo'
 
+  Scenario: Print my cat that is old and grumpy
+    Given def age = 10
+    And def myCat = { name: '#(catName)', age: '#(age)', isHappy: false}
+    And match myCat.name == 'Neo'
+    But assert !myCat.isHappy
+
   Scenario Outline: Greet several cats
     Given def cat = { name: '<visigothicName>', age: '<age>'}
     Then print 'Hello Visigothic cat ' + cat.name + ' who is ' + cat.age + ' years old'
@@ -37,11 +43,6 @@ Feature: Try out basic Karate syntax
     And def myCat = ({ name: catName, age: age, isHappy: true})
     Then match myCat.name == 'Neo'
     And print myCat
-
-  Scenario: Print my cat that is old and happy
-    Given def age = 10
-    And def myCat = { name: '#(catName)', age: '#(age)', isHappy: true}
-    Then print myCat
 
   Scenario: Assert that my favourite cat is happy
     Given def myCat = { name: '#(catName)', isHappy: true}
@@ -83,7 +84,7 @@ Feature: Try out basic Karate syntax
 
   Scenario: Store my cat and the last time of she asked me for food
     Given def lastRequestTime = java.lang.System.currentTimeMillis()
-    And def myCat = ({ name: 'Itzel', lastRequestTime: lastRequestTime})
+    And def myCat = { name: 'Itzel', lastRequestTime: '#(lastRequestTime)'}
     Then assert myCat.lastRequestTime < java.lang.System.currentTimeMillis()
 
   Scenario Outline: Extract a cat from file

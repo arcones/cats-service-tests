@@ -8,7 +8,7 @@ Feature: Show the usage of Karate header semantic field
 
   Scenario: Try to create a cat with no luck
     Given url 'http://localhost:4567/v1/cats'
-    And request ({ name: catName , age: 8 })
+    And request { name: '#(catName)' , age: 8 }
     And header Soy-El-Doctor = 'Grijando'
     When method PUT
     Then status 403
