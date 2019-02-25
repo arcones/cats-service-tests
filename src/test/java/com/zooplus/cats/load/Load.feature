@@ -5,4 +5,3 @@ Feature: Intended to be run from Gatling suite
     And path 'Perry'
     And method GET
     Then status 200
-

@@ -1,18 +1,14 @@
 plugins {
     id 'java'
-    id 'scala'
 }
 
 group 'com.zooplus'
 version '1.0'
 
-sourceCompatibility = 1.8
-
 dependencies {
     testCompile 'net.masterthought:cucumber-reporting:4.4.0'
     testCompile 'com.intuit.karate:karate-junit4:0.9.1'
     testCompile 'com.intuit.karate:karate-apache:0.9.1'
-    testCompile 'com.intuit.karate:karate-gatling:0.9.1'
 }
 
 repositories {
@@ -21,9 +17,6 @@ repositories {
 
 sourceSets {
     test {
-        scala {
-            srcDir 'src/test/scala'
-        }
         resources {
             srcDir file('src/test/java')
             exclude '**/*.java'
@@ -35,14 +28,4 @@ test {
     systemProperty "karate.options", System.properties.getProperty("karate.options")
     systemProperty "karate.env", System.properties.getProperty("karate.env")
     outputs.upToDateWhen { false }
-}
-
-task load(type: JavaExec) {
-    classpath = sourceSets.test.output + sourceSets.test.runtimeClasspath
-
-    main = 'io.gatling.app.Gatling'
-    args = [
-            '--simulation', 'simulation.LoadTestRunner',
-            '--results-folder', "${buildDir}/gatling-results"
-    ]
 }
