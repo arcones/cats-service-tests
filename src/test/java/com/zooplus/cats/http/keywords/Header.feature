@@ -6,13 +6,6 @@ Feature: Show the usage of Karate header semantic field
     * def catName = 'Pozi'
     * configure headers = { 'Annoying-Header' : 'I should be always there' }
 
-  Scenario: Try to create a cat with no luck
-    Given url 'http://localhost:4567/v1/cats'
-    And request { name: '#(catName)' , age: 8 }
-    And header Soy-El-Doctor = 'Grijando'
-    When method PUT
-    Then status 403
-
   Scenario: Create a cat correctly and the delete it
     Given url 'http://localhost:4567/v1/cats'
     And request ({ name: catName , age: 8 })

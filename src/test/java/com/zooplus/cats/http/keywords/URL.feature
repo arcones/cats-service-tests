@@ -1,11 +1,8 @@
 @URL
 Feature: Show the usage of Karate core keywords
 
-  Background: Store common variables used accross the scenarios
-    * def port = 4567
-
   Scenario: Create, retrieve and delete a cat
-    Given url 'http://localhost:' + port + '/v1/cats'
+    Given url 'http://localhost:4567/v1/cats'
     And request { name: 'Billie', age: 2 }
     When method PUT
     Then status 201

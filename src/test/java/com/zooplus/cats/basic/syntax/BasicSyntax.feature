@@ -10,6 +10,20 @@ Feature: Try out basic Karate syntax
     And match myCat.name == 'Neo'
     But assert !myCat.isHappy
 
+  Scenario: Use function to baptise my cats
+    Given def catPriest = function(arg) {return arg + ' De todos los Santos' }
+    When def newbornCats =
+    """
+    [
+      { name: '#(catPriest("Felix"))', age: 0},
+      { name: '#(catPriest("Lucifer"))', age: 0},
+      { name: '#(catPriest(catName))', age: 0},
+    ]
+    """
+    Then match newbornCats.[0].name == 'Felix De todos los Santos'
+    Then match newbornCats.[1].name == 'Lucifer De todos los Santos'
+    But match newbornCats.[2].name != 'Neo'
+
   Scenario Outline: Greet several cats
     Given def cat = { name: '<visigothicName>', age: '<age>'}
     Then print 'Hello Visigothic cat ' + cat.name + ' who is ' + cat.age + ' years old'
@@ -23,20 +37,6 @@ Feature: Try out basic Karate syntax
   Scenario: Greet the cat
     Given def greet = 'Guten morgen '
     Then print greet + catName
-
-  Scenario: Use function to baptise my cats
-    Given def catPriest = function(arg) {return arg + ' De todos los Santos' }
-    When def newbornCats =
-    """
-    ([
-      { name: catPriest("Felix"), age: 0},
-      { name: catPriest("Lucifer"), age: 0},
-      { name: catPriest(catName), age: 0},
-    ])
-    """
-    Then match newbornCats.[0].name == 'Felix De todos los Santos'
-    Then match newbornCats.[1].name == 'Lucifer De todos los Santos'
-    But match newbornCats.[2].name != 'Neo'
 
   Scenario: Print my cat that is old and happy
     Given def age = 10
@@ -85,7 +85,7 @@ Feature: Try out basic Karate syntax
   Scenario: Store my cat and the last time of she asked me for food
     Given def lastRequestTime = java.lang.System.currentTimeMillis()
     And def myCat = { name: 'Itzel', lastRequestTime: '#(lastRequestTime)'}
-    Then assert myCat.lastRequestTime < java.lang.System.currentTimeMillis()
+    Then print myCat.lastRequestTime
 
   Scenario Outline: Extract a cat from file
     Given def cat = read('<catFile>')
@@ -93,7 +93,7 @@ Feature: Try out basic Karate syntax
     And match cat !contains { behaviour: 'Good' }
     Examples:
       | catFile      |
-      | clander.json |
+      | ../clander.json |
       | fistro.json  |
       | jander.json  |
 
