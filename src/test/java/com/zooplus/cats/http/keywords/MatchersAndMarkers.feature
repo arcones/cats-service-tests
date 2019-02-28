@@ -25,12 +25,12 @@ Feature: Show other matches and markers
     Given url 'http://localhost:4567/v1/cats/master'
     When method GET
     Then status 200
+
     And match response.favouriteFoods contains ['Tigerino','Purizon']
     And match response.favouriteFoods contains any ['Cosma','Royal Canin']
     And match response.favouriteFoods contains only ['Cosma','Tigerino','Purizon']
-    And match response !contains { food: 'Royal Canin'}
 
-    And assert response.isTheBest
     And match $.pupils.[0] == '#object'
     And match $.pupils.[1].name == '#regex A.*l'
     And match response contains { age: '#? _ > 0 && _ < 100' }
+
